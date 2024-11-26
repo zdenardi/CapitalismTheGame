@@ -1,5 +1,5 @@
 class Property:
-    _ownder_id: int
+    _owner_id: int
     _name: str
     _price: int
     _is_mortgaged: bool

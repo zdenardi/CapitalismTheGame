@@ -1,7 +1,11 @@
 from src.board import Board
 from src.player import Player
 from src.property import Property
+import json
 
+file = open('./src/spaces.json')
+data = json.load(file)
+file.close()
 print("Starting")
 p1 = Player("Zach")
 p2 = Player("Sarah")
@@ -33,7 +37,8 @@ def playerTurn(player:Player,amount_of_roles:int = 1):
     total = d1+d2
     player.move_player(total)
     print("Moved Player: "+player.get_name()+" "+str(total)+" spots!")
-    print(player.get_name()+" now at "+str(player.get_pos()))
+    space = data[player.get_pos()]
+    print(player.get_name()+" now at "+str(space['name']))
     if(dbls):
         print(player.get_name() + " gets to go again!")
         playerTurn(player,amount_of_roles)
