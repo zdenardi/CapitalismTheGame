@@ -1,7 +1,7 @@
 # Class of player
 import itertools
 import random
-
+from typing import List
 class Player:
     _id: int
     _name:str
@@ -31,10 +31,6 @@ class Player:
         d2 = random.randint(1,6)
         print("Dice 1 is "+str(d1))
         print("Dice 2 is "+str(d2))
-        if d1 == d2:
-            print("Doubles!")
-        total = d1+d2
-        self.move_player(total)
-        print("Moved Player: "+self.get_name()+" "+str(total)+" spots!")
-        print(self.get_name()+" now at "+str(self.get_pos()))
+        return [d1,d2]
+
     
