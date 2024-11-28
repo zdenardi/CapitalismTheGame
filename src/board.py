@@ -8,8 +8,6 @@ class Board():
         for player in self.players:
             print(str(player.get_pos()))
     
-
-    
     def add_player(self,player:Player):
         player_name = player.get_name()
         self._players.append(player)
