@@ -14,5 +14,3 @@ class Board():
         print(player_name+" has been added")
 
     
-
-
