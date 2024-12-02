@@ -7,7 +7,8 @@ from curses import wrapper,window
 file = open('./src/spaces.json')
 data = json.load(file)
 file.close()
-TOP_ROW_PROPS = data[21:29]
+TOP_ROW_SPACES = data[21:30]
+
 # print("Starting")
 # p1 = Player("Zach")
 # p2 = Player("Sarah")
@@ -109,8 +110,9 @@ def createBoard(stdscr:window):
         for y in range(0,3):
             prop.addstr(y,4,SIDE)
      
-    def create_bottom_prop(w:window,starting_y,starting_x):
+    def create_bottom_prop(w:window,starting_y,starting_x,property_name:str="--"):
         prop = w.subwin(PROP_TB_H,PROP_LR_W,starting_y,starting_x)
+        prop.addstr(1,1,property_name)
         for x in range(0,4):
             prop.addch(0,x,TOP_BOTTOM_RAIL)
         for y in range(0,3):
@@ -127,22 +129,30 @@ def createBoard(stdscr:window):
     create_left_prop(stdscr,4,R_INSIDE_BORDER_X)
     create_right_prop(stdscr,4,0)
 
-    for numOfProp in range(2,11):
-        start_y = 4,
-        create_left_prop(stdscr,2*numOfProp,R_INSIDE_BORDER_X)
-        create_right_prop(stdscr,2*numOfProp,L_INSIDE_BORDER_X)
+    for i in range(2,11):
+        create_left_prop(stdscr,2*i,R_INSIDE_BORDER_X)
+        create_right_prop(stdscr,2*i,L_INSIDE_BORDER_X)
 
-# reate top and bottom
+    def get_property_abbr(words:str):
+        if(words == "Community Chest"): return "CC"
+        if(words =="Chance"): return "??" 
+        first_letters = ""
+        for word in words.split(): 
+            first_letters = first_letters+word[0]
+        return first_letters
+
+# create top and bottom
     spacer = CORNER_W-1
-    for num in range(0,9):
-        create_top_prop(stdscr,1,spacer)
-        create_bottom_prop(stdscr,22,spacer)
+    for i in range(0,9):
+        top_abbr = get_property_abbr(TOP_ROW_SPACES[i]['name'])
+        bottom_abbr = get_property_abbr(data[9-i]['name'])
+        create_top_prop(stdscr,1,spacer,top_abbr)
+        create_bottom_prop(stdscr,22,spacer,bottom_abbr)
         spacer = spacer + PROP_TB_W
 
     stdscr.refresh()
     stdscr.getkey()
 
-# 7,12,17
 
 wrapper(createBoard)
 
