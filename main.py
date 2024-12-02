@@ -4,9 +4,10 @@ from src.property import Property
 import json
 from curses import wrapper,window
 
-# file = open('./src/spaces.json')
-# data = json.load(file)
-# file.close()
+file = open('./src/spaces.json')
+data = json.load(file)
+file.close()
+TOP_ROW_PROPS = data[21:29]
 # print("Starting")
 # p1 = Player("Zach")
 # p2 = Player("Sarah")
@@ -77,6 +78,7 @@ def createBoard(stdscr:window):
     for h in range(1,BOARD_HEIGHT-2):
         game_board.addch(h,0,SIDE)
         game_board.addch(h,BOARD_WIDTH-4,SIDE)
+
     def create_corner(w:window,starting_y,starting_x):
         corner = w.subwin(CORNER_H,CORNER_W,starting_y,starting_x)
         for y in range(1,CORNER_H):
@@ -99,15 +101,14 @@ def createBoard(stdscr:window):
         for x in range(1,6):
             prop.addch(1,x,BOTTOM_BORDER)
 
-    def create_top_prop(w:window,starting_y,starting_x):
+    def create_top_prop(w:window,starting_y,starting_x,property_name:str="--"):
         prop = w.subwin(PROP_TB_H,PROP_TB_W,starting_y,starting_x)
-        # prop.addstr(1,1,"--")
+        prop.addstr(1,1,property_name)
         for x in range(0,4):
             prop.addstr(2,x,TOP_BOTTOM_RAIL)
         for y in range(0,3):
             prop.addstr(y,4,SIDE)
      
-
     def create_bottom_prop(w:window,starting_y,starting_x):
         prop = w.subwin(PROP_TB_H,PROP_LR_W,starting_y,starting_x)
         for x in range(0,4):
@@ -116,7 +117,7 @@ def createBoard(stdscr:window):
             prop.addch(y,4,SIDE)
      
     
-    
+# create corners
     free_parking = create_corner(stdscr,0,0)
     g2j = create_corner(stdscr,0,R_INSIDE_BORDER_X)
     go = create_corner(stdscr,21,R_INSIDE_BORDER_X)
@@ -131,19 +132,17 @@ def createBoard(stdscr:window):
         create_left_prop(stdscr,2*numOfProp,R_INSIDE_BORDER_X)
         create_right_prop(stdscr,2*numOfProp,L_INSIDE_BORDER_X)
 
-    create_top_prop(stdscr,1,CORNER_W-1)
-    create_bottom_prop(stdscr,22,7)
-    for num in range(3,11):
-        create_top_prop(stdscr,1,PROP_TB_W*num-3)
-        create_bottom_prop(stdscr,22,5*num-3)
+# reate top and bottom
+    spacer = CORNER_W-1
+    for num in range(0,9):
+        create_top_prop(stdscr,1,spacer)
+        create_bottom_prop(stdscr,22,spacer)
+        spacer = spacer + PROP_TB_W
 
-
-    
-    # game_board.border()
     stdscr.refresh()
     stdscr.getkey()
 
-
+# 7,12,17
 
 wrapper(createBoard)
 
