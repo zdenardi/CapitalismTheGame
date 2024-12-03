@@ -4,13 +4,19 @@ from src.property import Property
 import json
 from curses import wrapper,window
 
+# Get property JSON
 file = open('./src/spaces.json')
 data = json.load(file)
 file.close()
+# Break up data to their own constants 
+BOTTOM_SPACES = data[1:10]
 LEFT_SPACES = data[11:20]
-LEFT_SPACES.reverse()
 RIGHT_SPACES = data[31:40]
 TOP_ROW_SPACES = data[21:30]
+
+BOTTOM_SPACES.reverse() # must be reversed for logic of render
+LEFT_SPACES.reverse()   # must be reversed for logic of render
+
 
 # print("Starting")
 # p1 = Player("Zach")
@@ -154,7 +160,7 @@ def createBoard(stdscr:window):
 
     for i in range(0,9):
         top_abbr = get_property_abbr(TOP_ROW_SPACES[i]['name'])
-        bottom_abbr = get_property_abbr(data[9-i]['name'])
+        bottom_abbr = get_property_abbr(BOTTOM_SPACES[i]['name'])
         create_top_prop(stdscr,1,spacer,top_abbr)
         create_bottom_prop(stdscr,22,spacer,bottom_abbr)
         spacer = spacer + PROP_TB_W
