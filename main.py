@@ -2,11 +2,11 @@ from src.board import Board
 from src.player import Player
 from src.property import Property
 import json
-from curses import wrapper,window
+from curses import wrapper
+import curses
 
-# file = open('./src/spaces.json')
-# data = json.load(file)
-# file.close()
+
+
 # print("Starting")
 # p1 = Player("Zach")
 # p2 = Player("Sarah")
@@ -33,7 +33,7 @@ from curses import wrapper,window
 #     if(amount_of_rolls == 3):
 #         print("Go to Jail")
 #         turn = False
-#         pass 
+#         pass
 
 #     total = d1+d2
 #     player.move_player(total)
@@ -47,20 +47,8 @@ from curses import wrapper,window
 
 # playerTurn(p1)
 # playerTurn(p2)
-       
-def createBoard(stdscr:window):
-    stdscr.clear()
-    boardFile = open('./board.txt')
-    for i,line in enumerate(boardFile):
-        stdscr.addstr(i, 0, line)
-
-    
-    stdscr.refresh()
-    boardFile.close()
-    stdscr.getkey()
 
 
+stdscr = curses.initscr()
 
-wrapper(createBoard)
-
-
+wrapper(Board.createBoard(stdscr))
