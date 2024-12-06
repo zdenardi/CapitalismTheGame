@@ -21,6 +21,7 @@ class Board:
         file = open("src/spaces.json")
         data = json.load(file)
         file.close()
+
         # Break up data to their own constants
         BOTTOM_SPACES = data[1:10]
         LEFT_SPACES = data[11:20]
@@ -60,7 +61,9 @@ class Board:
             game_board.addch(h, BOARD_WIDTH - 4, SIDE)
 
         # Creates corner spaces
-        def create_corner(w: window, starting_y:int, starting_x:int, corner_name: str = "--"):
+        def create_corner(
+            w: window, starting_y: int, starting_x: int, corner_name: str = "--"
+        ):
             corner = w.subwin(CORNER_H, CORNER_W, starting_y, starting_x)
             corner.addstr(2, 2, corner_name)
             for y in range(1, CORNER_H):
@@ -69,8 +72,10 @@ class Board:
             for x in range(1, 6):
                 corner.addch(3, x, BOTTOM_BORDER)
 
-        # Creates right Side spaces 
-        def create_right_prop(w: window, starting_y:int, starting_x:int, prop_abr: str = "--"):
+        # Creates right Side spaces
+        def create_right_prop(
+            w: window, starting_y: int, starting_x: int, prop_abr: str = "--"
+        ):
             prop = w.subwin(PROP_LR_H, PROP_LR_W, starting_y, starting_x)
             prop.addstr(0, 2, prop_abr)
             for y in range(0, 2):
@@ -79,7 +84,9 @@ class Board:
                 prop.addch(1, x, BOTTOM_BORDER)
 
         # Creates Left side spaces
-        def create_left_prop(w: window, starting_y:int, starting_x:int, prop_abr: str = "--"):
+        def create_left_prop(
+            w: window, starting_y: int, starting_x: int, prop_abr: str = "--"
+        ):
             prop = w.subwin(PROP_LR_H, PROP_LR_W, starting_y, starting_x)
             prop.addstr(0, 2, prop_abr)
 
@@ -89,7 +96,9 @@ class Board:
                 prop.addch(1, x, BOTTOM_BORDER)
 
         # Creates top line spaces
-        def create_top_prop(w: window, starting_y:int, starting_x:int, prop_abr: str = "--"):
+        def create_top_prop(
+            w: window, starting_y: int, starting_x: int, prop_abr: str = "--"
+        ):
             prop = w.subwin(PROP_TB_H, PROP_TB_W, starting_y, starting_x)
             prop.addstr(1, 1, prop_abr)
             for x in range(0, 4):
@@ -98,7 +107,9 @@ class Board:
                 prop.addstr(y, 4, SIDE)
 
         # creates bottom line spaces
-        def create_bottom_prop(w: window, starting_y:int, starting_x:int, prop_abr: str = "--"):
+        def create_bottom_prop(
+            w: window, starting_y: int, starting_x: int, prop_abr: str = "--"
+        ):
             prop = w.subwin(PROP_TB_H, PROP_LR_W, starting_y, starting_x)
             prop.addstr(1, 1, prop_abr)
             for x in range(0, 4):
@@ -106,7 +117,7 @@ class Board:
             for y in range(0, 3):
                 prop.addch(y, 4, SIDE)
 
-        # Using the spaces.json, gets the name of the space and shortens 
+        # Using the spaces.json, gets the name of the space and shortens
         def get_property_abbr(words: str):
             if words == "Community Chest":
                 return "CC"
@@ -146,4 +157,3 @@ class Board:
 
         stdscr.refresh()
         stdscr.getkey()
-
