@@ -1,11 +1,7 @@
-from .player import Player
-from typing import List
 import json
 from curses import wrapper, window
 
-
 class Board:
-    _players: List[Player] = []
     _L_INSIDE_BORDER_X: int = 0
     _R_INSIDE_BORDER_X: int = 51
     _CORNER_H: int = 4
@@ -18,16 +14,7 @@ class Board:
     _BOARD_WIDTH: int = (_CORNER_W * 2) + (_PROP_TB_W * 9)
     _BOARD_HEIGHT: int = (2 * _CORNER_H) + (9 * _PROP_LR_H)
 
-    def get_players_pos(self):
-        for player in self.players:
-            print(str(player.get_pos()))
-
-    def add_player(self, player: Player):
-        player_name = player.get_name()
-        self._players.append(player)
-        print(player_name + " has been added")
-
-    def createBoard(self, stdscr: window):
+    def createBoard(self, stdscr: window) -> window:
         # Get property JSON
         file = open("src/spaces.json")
         data = json.load(file)
@@ -155,9 +142,10 @@ class Board:
             spacer = spacer + self._PROP_TB_W
 
         return stdscr
-
+    
     def get_board_width(self):
         return self._BOARD_WIDTH
 
     def get_board_height(self):
         return self._BOARD_HEIGHT
+
