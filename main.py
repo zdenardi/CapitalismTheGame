@@ -7,8 +7,6 @@ import curses
 from curses import wrapper, window
 from curses.textpad import Textbox, rectangle
 
-
-
 def startGame(stdscr:window):
     game = Game(stdscr)
 
@@ -28,18 +26,15 @@ def startGame(stdscr:window):
 
     stdscr.refresh()
     ui_win.refresh()
-    
-
+    player_win.refresh()
     WAITING = True
 
     while WAITING:
         box.edit()
+
         WAITING = False
     
     player_name = box.gather().strip()
-
-    player_win.clear()
-    stdscr.refresh()
 
     p1 = Player(player_name)
     p2 = Player("Sarah")

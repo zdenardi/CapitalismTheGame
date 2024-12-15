@@ -24,22 +24,21 @@ class Game:
         self._ui_win = curses.newwin(int(curses.LINES/2),40,2,BOARD_W+2)
         rectangle(stdscr,1,BOARD_W+1,25,BOARD_W*2)
         # Create border and player input window
-        self._player_win = curses.newwin(BOARD_H-8,BOARD_W-15,5,9)
-        rectangle(stdscr,4,8,9,BOARD_W-16)
+        self._player_win = curses.newwin(BOARD_H-10,BOARD_W-19,5,9)
+        rectangle(stdscr,4,8,9,BOARD_W-17)
         
-        self._ui_win.refresh()
-        self._player_win.refresh()
+        # self._ui_win.refresh()
+        # self._player_win.refresh()
         stdscr.refresh()
         pass
         
-
     def get_board(self):
         return self._board
     
-    def get_ui_win(self):
+    def get_ui_win(self)->window:
         return self._ui_win
     
-    def get_player_win(self):
+    def get_player_win(self)->window:
         return self._player_win
     
     def add_player(self, player: Player):
