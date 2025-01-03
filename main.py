@@ -7,7 +7,8 @@ import curses
 from curses import wrapper, window
 from curses.textpad import Textbox, rectangle
 
-def startGame(stdscr:window):
+
+def startGame(stdscr: window):
     game = Game(stdscr)
 
     board = game.get_board()
@@ -20,24 +21,10 @@ def startGame(stdscr:window):
 
     game.print_ui_text("Starting...")
 
-    game.print_ui_text( "Enter Player 1's name and press CTRL+G ")
-    
-    box = Textbox(player_win)
-
-    stdscr.refresh()
-    ui_win.refresh()
-    player_win.refresh()
-    WAITING = True
-
-    while WAITING:
-        box.edit()
-
-        WAITING = False
-    
-    player_name = box.gather().strip()
-
-    p1 = Player(player_name)
-    p2 = Player("Sarah")
+    first_player = game.getUserInput("Enter Player 1's name and press CTRL+G ")
+    second_player = game.getUserInput("Enter Player 2's name and press CTRL+G ")
+    p1 = Player(first_player)
+    p2 = Player(second_player)
 
     game.add_player(p1)
     game.add_player(p2)
