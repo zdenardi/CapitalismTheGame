@@ -1,54 +1,39 @@
 from src.board import Board
 from src.player import Player
 from src.property import Property
-import json
-from curses import wrapper
+from src.game import Game
 import curses
 
+from curses import wrapper, window
+from curses.textpad import Textbox, rectangle
 
 
-# print("Starting")
-# p1 = Player("Zach")
-# p2 = Player("Sarah")
+def startGame(stdscr: window):
+    game = Game(stdscr)
 
-# board = Board()
-# board.add_player(p1)
-# board.add_player(p2)
+    board = game.get_board()
+    ui_win = game.get_ui_win()
+    player_win = game.get_player_win()
 
+    WAITING = False
 
-# def playerTurn(player:Player,amount_of_rolls:int = 1):
-#     if(amount_of_rolls == 1):
-#         print(player.get_name() + " is taking their turn")
-#     turn = True
-#     dbls = False
-#     dice = player.roll_dice()
-#     d1 = dice[0]
-#     d2 = dice[1]
-#     if d1 == d2:
-#         print("Doubles!")
-#         amount_of_rolls = amount_of_rolls + 1
-#         dbls = True
+    board.createBoard(stdscr)
 
+    game.print_ui_text("Starting...")
 
-#     if(amount_of_rolls == 3):
-#         print("Go to Jail")
-#         turn = False
-#         pass
+    first_player = game.getUserInput("Enter Player 1's name and press CTRL+G ")
+    second_player = game.getUserInput("Enter Player 2's name and press CTRL+G ")
+    p1 = Player(first_player)
+    p2 = Player(second_player)
 
-#     total = d1+d2
-#     player.move_player(total)
-#     print("Moved Player: "+player.get_name()+" "+str(total)+" spots!")
-#     space = data[player.get_pos()]
-#     print(player.get_name()+" now at "+str(space['name']))
-#     if(dbls):
-#         print(player.get_name() + " gets to go again!")
-#         playerTurn(player,amount_of_rolls)
-#     turn = False
+    game.add_player(p1)
+    game.add_player(p2)
 
-# playerTurn(p1)
-# playerTurn(p2)
+    game.playerTurn(p1)
+    game.playerTurn(p2)
+
+    stdscr.getkey()
 
 
-stdscr = curses.initscr()
-
-wrapper(Board.createBoard(stdscr))
+if __name__ == "__main__":
+    wrapper(startGame)

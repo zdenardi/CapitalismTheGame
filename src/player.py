@@ -29,8 +29,6 @@ class Player:
     def roll_dice(self):
         d1 = random.randint(1,6)
         d2 = random.randint(1,6)
-        print("Dice 1 is "+str(d1))
-        print("Dice 2 is "+str(d2))
         return [d1,d2]
 
     
