@@ -29,7 +29,7 @@ class Game:
         # Create border and player input window
         self.create_player_win()
         rectangle(stdscr, 4, 8, 9, BOARD_W - 17)
-
+        self._player_win.refresh()
         stdscr.refresh()
         pass
 
@@ -59,58 +59,62 @@ class Game:
 
     def print_ui_text(self, text: str):
         self._ui_win.addstr(text + "\n")
+        self._ui_win.refresh()
 
     def playerTurn(self, player: Player, amount_of_rolls: int = 1):
         file = open("src/spaces.json")
         data = json.load(file)
         file.close()
-        self.clearWinAndRefresh(self._ui_win)
+
         if amount_of_rolls == 1:
             self.print_ui_text(player.get_name() + " is taking their turn...")
         turn = True
         dbls = False
 
         # ask what they want to do
+        self.print_ui_text("Press R to roll")
 
-        [d1, d2] = player.roll_dice()
-        self.print_ui_text("Dice 1 is " + str(d1))
-        self.print_ui_text("Dice 2 is " + str(d2))
-        if d1 == d2:
-            self.print_ui_text("Doubles!")
-            amount_of_rolls = amount_of_rolls + 1
-            dbls = True
+        while True:
+            try:
+                key = self._ui_win.get_wch()
+            except:
+                key = None
+            if key == "r":
+                [d1, d2] = player.roll_dice()
+                self.print_ui_text("Dice 1 is " + str(d1))
+                self.print_ui_text("Dice 2 is " + str(d2))
+                if d1 == d2:
+                    self.print_ui_text("Doubles!")
+                    amount_of_rolls = amount_of_rolls + 1
+                    dbls = True
 
-        if amount_of_rolls == 3:
-            self.print_ui_text("Go to Jail")
-            turn = False
-            pass
-
-        total = d1 + d2
-        player.move_player(total)
-        self.print_ui_text(
-            "Moved Player: " + player.get_name() + " " + str(total) + " spots!"
-        )
-        space = data[player.get_pos()]
-        self.print_ui_text(player.get_name() + " now at " + str(space["name"]))
-        self._ui_win.refresh()
-        if dbls:
-            self.print_ui_text(player.get_name() + " gets to go again!")
-            self.playerTurn(player, amount_of_rolls)
-
-        turn = False
+                if amount_of_rolls == 3:
+                    self.print_ui_text("Go to Jail")
+                    turn = False
+                    pass
+                total = d1 + d2
+                player.move_player(total)
+                self.print_ui_text(
+                    "Moved Player: " + player.get_name() + " " + str(total) + " spots!"
+                )
+                space = data[player.get_pos()]
+                self.print_ui_text(player.get_name() + " now at " + str(space["name"]))
+                self._ui_win.refresh()
+                if dbls:
+                    self.print_ui_text(player.get_name() + " gets to go again!")
+                    self.playerTurn(player, amount_of_rolls)
+                return False
 
     def clearWinAndRefresh(self, win: window):
         win.clear()
-        self._stdscr.touchwin()
+        win.refresh()
         self._stdscr.refresh()
 
     def getUserInput(self, prompt: str):
         box = Textbox(self._player_win)
         self.print_ui_text(prompt)
-        self._stdscr.refresh()
-        self._ui_win.refresh()
-        self._player_win.refresh()
         box.edit()
         userAns = box.gather().strip()
         self.clearWinAndRefresh(self._player_win)
+        self.clearWinAndRefresh(self._ui_win)
         return userAns
